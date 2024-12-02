@@ -383,6 +383,28 @@
 
 <!-- This is the Content box, Maybe a good idea for Reuse -->
 
+<div id="blog-container"></div>
+<script>
+  async function loadBlogPosts() {
+    const response = await fetch('_posts');
+    const posts = await response.json(); // Adjust based on the file format
+    let blogHTML = "";
+
+    posts.forEach(post => {
+      blogHTML += `
+        <div class="blog-post">
+          <h2>${post.title}</h2>
+          <p>${post.body}</p>
+        </div>
+      `;
+    });
+
+    document.getElementById('blog-container').innerHTML = blogHTML;
+  }
+
+  loadBlogPosts();
+</script>
+
     <div class="row justify-content-center mt-5">
       <div class="col-md-6 text-center">
         <h2 class="display-4" style="font-size: calc(1.5rem + 1vw); color: #007BFF;">The Ramblings</h2>
@@ -449,6 +471,9 @@
         </div>
     </footer>
 
+
+
+
     <script>
         if (window.netlifyIdentity) {
           window.netlifyIdentity.on("init", (user) => {
@@ -460,7 +485,7 @@
           });
         }
       </script>
-      
+
 <!-- This is the end of the Footer -->
 
 <!-- This is the end of the Page -->
