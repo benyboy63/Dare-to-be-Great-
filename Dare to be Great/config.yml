@@ -1,0 +1,17 @@
+backend:
+  name: git-gateway
+  branch: main # The branch of your GitHub repository
+
+media_folder: "static/images/uploads" # Path to store uploaded images
+public_folder: "/images/uploads" # Public-facing path for images
+
+collections:
+  - name: "blog" # Identifier for the collection
+    label: "Blog" # Visible label in the CMS
+    folder: "content/blog" # Folder where posts are stored
+    create: true # Allow users to create new posts
+    slug: "{{slug}}" # File name template
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Image", name: "image", widget: "image" }
