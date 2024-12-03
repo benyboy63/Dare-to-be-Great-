@@ -78,7 +78,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3 michroma-regular" href="index1.html" style="color: #007BFF;">Upload</a>
+                        <a class="nav-link px-3 michroma-regular" href="password.html" style="color: #007BFF;">Upload</a>
                     </li>
                 </ul>
             </ul>
@@ -379,7 +379,13 @@
         </div>
     </div>
 </body>
-    
+
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 text-center">
+      <h2 class="display-4" style="font-size: calc(1.5rem + 1vw); color: #007BFF;">The Ramblings</h2>
+    </div>
+  </div>
 
 <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -387,60 +393,134 @@
 <!-- This is the Content box, Maybe a good idea for Reuse -->
 
 <div id="blog-container"></div>
-<script>
-  async function loadBlogPosts() {
-    const response = await fetch('_posts');
-    const posts = await response.json(); // Adjust based on the file format
-    let blogHTML = "";
 
-    posts.forEach(post => {
-      blogHTML += `
-        <div class="blog-post">
-          <h2>${post.title}</h2>
-          <p>${post.body}</p>
-        </div>
-      `;
-    });
-
-    document.getElementById('blog-container').innerHTML = blogHTML;
-  }
-
-  loadBlogPosts();
 </script>
-
-    <div class="row justify-content-center mt-5">
-      <div class="col-md-6 text-center">
-        <h2 class="display-4" style="font-size: calc(1.5rem + 1vw); color: #007BFF;">The Ramblings</h2>
+<!-- Blog Posts Section -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div id="blog-container"></div>
       </div>
     </div>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <article class="bg-light p-4 rounded border border-dark" >
-                    <header class="mb-4">
-                        <h2 class="display-4">Article Title</h2>
-                        <p class="text-muted">By Author Name | Date</p>
-                    </header>
-                    <section class="mb-4">
-                        <h3 class="h5">Introduction</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus.</p>
-                    </section>
-                    <section class="mb-4">
-                        <h3 class="h5">Main Content</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus.</p>
-                    </section>
-                    <section class="mb-4">
-                        <h3 class="h5">Conclusion</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus.</p>
-                    </section>
-                    <footer class="text-muted">
-                        <p>Published on Date</p>
-                    </footer>
-                </article>
-            </div>
-        </div>
-    </div>
+  </div>
+
+<!-- Add necessary CSS styles -->
+<style>
+.blog-post {
+    border: 2px solid #000; /* Border around each blog post */
+    padding: 10px; /* Padding inside the blog post */
+    border-radius: 4px; /* Optional: Rounded corners */
+    background-color: #b8b8b8; /* Light background */
+    font-family: "Michroma"; /* Changed font family */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
+    margin-bottom: 18%; /* Space between articles */
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center; /* Center the text inside the blog post */
+}
+
+.blog-header h2 {
+    text-align: center; /* Center the title */
+    font-size: 2.5rem; /* Increase title size */
+}
+
+.blog-header p {
+    text-align: center; /* Center the author and date */
+    font-size: 1rem; /* Author/date font size */
+    color: #6c757d; /* Muted color */
+}
+
+.blog-content {
+    text-align: justify; /* Justify the content for better readability */
+    margin-bottom: 20px; /* Space below content */
+}
+
+.blog-image img {
+    max-width: 100%; /* Ensure images are responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Optional: Rounded corners for images */
+}
+
+#blog-container {
+    padding: 20px; /* Padding around the blog container */
+    background-color: #ffffff; /* Background color for the blog section */
+    max-width: 85vw; /* Limit the width of the blog section */
+    width: 100%;
+    margin: 0 auto; /* Center the blog container */
+}
+</style>
+
 <!-- This is the end of the content box -->
+
+<script>
+    function loadBlogPosts() {
+      const posts = JSON.parse(localStorage.getItem('posts')) || [];
+      let blogHTML = '';
+
+      posts.reverse(); // Reverse the order of posts to show the latest first
+  
+      posts.forEach((post, index) => {
+        blogHTML += `
+          <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+              <article class="blog-post bg-light p-4 rounded border border-dark">
+                <header class="blog-header mb-4">
+                  <h2 class="display-4">${post.title}</h2>
+                  <p class="text-muted">By ${post.author} | ${post.date}</p>
+                </header>
+                <section class="blog-content mb-4">
+                  <h3 class="h5"></h3>
+                  <p>${post.introduction}</p>
+                </section>
+                <section class="blog-content mb-4">
+                  <h3 class="h5"></h3>
+                  <p>${post.content}</p>
+                </section>
+                ${post.image ? `
+                <section class="blog-image mb-4">
+                  <img src="${post.image}" alt="${post.title}" class="img-fluid">
+                </section>` : ''}
+              </article>
+            </div>
+          </div>
+        `;
+      });
+  
+      document.getElementById('blog-container').innerHTML = blogHTML;
+    }
+  
+
+
+    function deletePost(index) {
+      const posts = JSON.parse(localStorage.getItem('posts')) || [];
+      posts.splice(index, 1);
+      localStorage.setItem('posts', JSON.stringify(posts));
+      loadBlogPosts();
+    }
+  
+    // Call the function to display blog posts when the page loads
+    document.addEventListener('DOMContentLoaded', loadBlogPosts);
+
+  </script>
+
+
+<script>
+  
+    function deletePost(index) {
+      const posts = JSON.parse(localStorage.getItem('posts')) || [];
+      posts.splice(index, 1);
+      localStorage.setItem('posts', JSON.stringify(posts));
+      displayBlogPosts();
+    }
+  
+    // Call the function to display blog posts when the page loads
+    document.addEventListener('DOMContentLoaded', displayBlogPosts);
+
+  </script>
+
 
 <!-- This is the Footer -->
 
