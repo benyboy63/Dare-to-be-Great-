@@ -1,17 +1,20 @@
 backend:
   name: git-gateway
-  branch: main # The branch of your GitHub repository
+  branch: main # Branch to update (optional; defaults to master)
 
-media_folder: "static/images/uploads" # Path to store uploaded images
-public_folder: "/images/uploads" # Public-facing path for images
+media_folder: "static/img" # Folder where user uploaded files should go
+public_folder: "/img" # Folder where uploaded files should be accessed in the browser
 
 collections:
-  - name: "blog" # Identifier for the collection
-    label: "Blog" # Visible label in the CMS
-    folder: "content/blog" # Folder where posts are stored
-    create: true # Allow users to create new posts
-    slug: "{{slug}}" # File name template
+  - name: "blog"
+    label: "Blog"
+    folder: "content/blog"
+    create: true
+    slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Introduction", name: "introduction", widget: "text" }
+      - { label: "Content", name: "content", widget: "markdown" }
       - { label: "Image", name: "image", widget: "image" }

@@ -456,13 +456,15 @@
 <!-- This is the end of the content box -->
 
 <script>
-    function loadBlogPosts() {
-      const posts = JSON.parse(localStorage.getItem('posts')) || [];
+    async function loadBlogPosts() {
+      const response = await fetch('https://api.github.com/repos/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY/contents/content/blog');
+      const files = await response.json();
       let blogHTML = '';
-
-      posts.reverse(); // Reverse the order of posts to show the latest first
   
-      posts.forEach((post, index) => {
+      for (const file of files) {
+        const fileResponse = await fetch(file.download_url);
+        const post = await fileResponse.json();
+  
         blogHTML += `
           <div class="row justify-content-center mt-5">
             <div class="col-md-8">
@@ -472,11 +474,11 @@
                   <p class="text-muted">By ${post.author} | ${post.date}</p>
                 </header>
                 <section class="blog-content mb-4">
-                  <h3 class="h5"></h3>
+                  <h3 class="h5">Introduction</h3>
                   <p>${post.introduction}</p>
                 </section>
                 <section class="blog-content mb-4">
-                  <h3 class="h5"></h3>
+                  <h3 class="h5">Main Content</h3>
                   <p>${post.content}</p>
                 </section>
                 ${post.image ? `
@@ -487,23 +489,13 @@
             </div>
           </div>
         `;
-      });
+      }
   
       document.getElementById('blog-container').innerHTML = blogHTML;
     }
   
-
-
-    function deletePost(index) {
-      const posts = JSON.parse(localStorage.getItem('posts')) || [];
-      posts.splice(index, 1);
-      localStorage.setItem('posts', JSON.stringify(posts));
-      loadBlogPosts();
-    }
-  
     // Call the function to display blog posts when the page loads
     document.addEventListener('DOMContentLoaded', loadBlogPosts);
-
   </script>
 
 
